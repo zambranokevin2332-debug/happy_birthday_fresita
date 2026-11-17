@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Edición Especial - Para Alguien en Especial 🍓</title>
+    
+    <!-- Google Fonts: Tipografías caligráficas y elegantes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Three.js & OrbitControls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- Estilos separados -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex flex-col h-screen overflow-hidden">
+
+    <!-- MÚSICA DE FONDO DESDE GITHUB -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://raw.githubusercontent.com/zambranokevin2332-debug/index/main/Happy%20Birthday%20to%20You%20Lullaby.mp3" type="audio/mpeg">
+        Tu navegador no soporta elementos de audio.
+    </audio>
+
+    <!-- 1. PANTALLA INICIAL DE BIENVENIDA -->
+    <div id="welcome-screen" class="fixed inset-0 z-40 flex items-center justify-center p-4 sm:p-6 transition-all duration-1000 bg-[#fff5f7]">
+        <div id="welcome-bg-decor" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+
+        <div id="welcome-card" class="welcome-card relative w-full max-w-lg rounded-[32px] px-7 py-10 sm:px-12 sm:py-12 text-center z-10">
+            <div class="absolute inset-2.5 rounded-[24px] border border-pink-200/60 pointer-events-none"></div>
+
+            <div class="mx-auto mb-6 w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-b from-white to-pink-100 shadow-md border border-pink-200/80 flex items-center justify-center">
+                <div class="animate-heartbeat text-rose-600">
+                    <svg width="34" height="34" viewBox="0 0 24 24" fill="url(#heartGrad)" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="heartGrad" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#ff4d79"/>
+                                <stop offset="100%" stop-color="#b81d43"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <p class="text-[11px] sm:text-xs font-semibold tracking-[0.35em] text-rose-400 uppercase mb-2">
+                EDICIÓN ESPECIAL
+            </p>
+
+            <h1 class="font-script text-5xl sm:text-6xl md:text-7xl text-[#6e2b3d] mb-5 leading-tight drop-shadow-sm">
+                Para Alguien tan Especial
+            </h1>
+
+            <div class="flex items-center justify-center gap-3 mb-5 opacity-75">
+                <span class="h-[1px] w-12 bg-gradient-to-r from-transparent to-pink-300"></span>
+                <span class="text-sm">🍓</span>
+                <span class="h-[1px] w-12 bg-gradient-to-l from-transparent to-pink-300"></span>
+            </div>
+
+            <p class="font-serif-elegant italic text-sm sm:text-base text-[#7a4b58] leading-relaxed max-w-md mx-auto mb-8 px-2">
+                "He preparado un detalle muy especial pensando en ti, porque mereces todo lo más bonito de este mundo."
+            </p>
+
+            <button id="btn-open-experience" class="btn-gift rounded-full px-8 py-3.5 text-xs sm:text-sm font-semibold uppercase cursor-pointer">
+                VER MI REGALO
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. INTERFAZ PRINCIPAL CON BANNER SUPERIOR Y ESCENA 3D CENTRADA -->
+    <header class="header-banner w-full py-2 px-4 text-center relative shadow-sm">
+        <h2 class="font-script text-2xl sm:text-3xl text-[#6e2b3d] drop-shadow-sm leading-tight">
+            Un pequeño detalle para alguien muy especial
+        </h2>
+        <p class="text-[9px] sm:text-xs font-semibold tracking-[0.25em] text-rose-500/90 uppercase mt-0">
+            ESPERO QUE TENGAS UN FELIZ CUMPLEAÑOS
+        </p>
+
+        <!-- Botones discretos alineados a la derecha -->
+        <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+            <button id="btn-album-shortcut" title="Abrir Álbum Especial" class="hidden bg-white/90 hover:bg-white text-rose-600 border border-pink-200 rounded-full p-2 shadow-sm transition transform hover:scale-105 cursor-pointer">
+                <span class="text-sm leading-none">📖</span>
+            </button>
+            <button id="btn-sound-toggle" title="Activar / Silenciar música" class="bg-white/90 hover:bg-white text-rose-600 border border-pink-200 rounded-full p-2 shadow-sm transition transform hover:scale-105 cursor-pointer">
+                <svg id="icon-sound-on" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                </svg>
+                <svg id="icon-sound-off" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR 3D INFERIOR -->
+    <div id="canvas-wrapper">
+        <div id="canvas-container"></div>
+        <div id="dynamic-banners"></div>
+        <div class="absolute bottom-3 left-0 right-0 text-center pointer-events-none z-20">
+            <div class="inline-block bg-white/90 backdrop-blur-md border border-pink-200/90 rounded-full px-5 py-1.5 shadow-sm">
+                <p id="guide-text" class="guide-text font-serif-elegant italic text-sm sm:text-base text-[#7a3b4e]">
+                    Toca el lazo para abrir tu sorpresa 🎀
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. MODAL "NUESTRO ÁLBUM ESPECIAL" -->
+    <div id="album-modal" class="album-modal-backdrop fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 opacity-0">
+        <div class="relative w-full max-w-2xl bg-white/95 rounded-[30px] border-2 border-pink-200 shadow-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+            <button id="btn-close-album" class="absolute top-4 right-4 sm:top-6 sm:right-6 w-9 h-9 rounded-full bg-pink-100 hover:bg-rose-500 text-rose-600 hover:text-white flex items-center justify-center font-bold text-lg transition cursor-pointer shadow-sm">
+                ×
+            </button>
+
+            <div class="text-center mb-6">
+                <h3 class="font-script text-4xl sm:text-5xl text-[#6e2b3d] leading-tight">
+                    Un Álbum Especial
+                </h3>
+                <p class="font-serif-elegant italic text-xs sm:text-sm text-rose-500 mt-1">
+                    
+                </p>
+            </div>
+
+            <div id="album-grid" class="grid grid-cols-2 gap-4 sm:gap-6"></div>
+
+            <div class="mt-6 text-center">
+                <label class="inline-flex items-center gap-2 text-[11px] sm:text-xs text-rose-500 hover:text-rose-700 bg-pink-50 hover:bg-pink-100 border border-pink-200 rounded-full px-4 py-1.5 cursor-pointer transition">
+                    <span></span>
+                    <input type="file" id="custom-photo-input" accept="image/*" class="hidden">
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. VISTA AMPLIADA DE RECUERDO (LIGHTBOX) -->
+    <div id="photo-zoom-modal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4 bg-rose-950/40 backdrop-blur-md cursor-pointer">
+        <div id="zoom-card-container" class="relative bg-white rounded-[28px] p-4 sm:p-6 border-4 border-pink-300 shadow-2xl max-w-sm sm:max-w-md w-full text-center transform transition-all duration-300 scale-95">
+            <div id="zoom-hearts-layer" class="absolute inset-0 overflow-hidden pointer-events-none rounded-[24px]"></div>
+            <img id="zoom-image" src="" alt="Recuerdo Especial" class="w-full aspect-square object-cover rounded-[20px] border border-pink-100 shadow-inner mb-4">
+            <p id="zoom-caption" class="font-script text-3xl sm:text-4xl text-[#6e2b3d] mb-1"></p>
+            <p id="zoom-subcaption" class="font-serif-elegant italic text-xs text-rose-400">
+                Toca en cualquier lugar para volver al álbum ✨
+            </p>
+        </div>
+    </div>
+
+    <!-- Lógica separada -->
+    <script src="script.js"></script>
+</body>
+</html>
